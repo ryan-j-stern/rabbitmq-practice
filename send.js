@@ -3,8 +3,6 @@ const axios = require("axios");
 const baseUrl = " http://api.weatherapi.com/v1";
 const apiKey = process.env.WEATHER_API_KEY;
 
-async function callWeatherApi() {}
-
 // Connect to the RabbitMQ server
 amqp.connect("amqp://localhost", (error, connection) => {
   if (error) {
