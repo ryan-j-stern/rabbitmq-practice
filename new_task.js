@@ -14,8 +14,8 @@ ampq.connect("amqp://localhost", (error, connection) => {
       throw err;
     }
 
-    const queue = "hello";
-    const msg = "Hello World";
+    const queue = "task_queue";
+    const msg = process.argv.slice(2).join(" ") || "Hello World";
 
     // Declare a queue, will only be created if queue does not exist
     channel.assertQueue(queue, {
@@ -23,7 +23,9 @@ ampq.connect("amqp://localhost", (error, connection) => {
     });
 
     // Send the message to the queue
-    channel.sendToQueue(queue, Buffer.from(msg));
+    channel.sendToQueue(queue, Buffer.from(msg), {
+      persistent: true
+    });
     console.log(`[X] Sent message ${msg}`);
   });
 
