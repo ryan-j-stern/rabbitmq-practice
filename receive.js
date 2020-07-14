@@ -1,25 +1,23 @@
 const ampq = require("amqplib/callback_api");
 
-ampq.connect("amqp://localhost", (err, connection) => {
-  if (err) throw err;
+ampq.connect("amqp://localhost", (error, connection) => {
+  if (error) throw error;
 
-  connection.createChannel((error, channel) => {
-    if (error) throw error;
+  connection.createChannel((err, channel) => {
+    if (err) throw err;
 
-    const queue = "hello";
+    const queue = "weather";
 
-    channel.assertQueue(queue, {
-      durable: false
-    });
+    channel.assertQueue(queue, { durable: true });
 
     console.log(
-      "[*] Waiting to receive messages in 'hello'. To exit, press CTRL+C."
+      "[*] Waiting to receive messages in 'weather'. To exit, press CTRL+C."
     );
 
     channel.consume(
       queue,
       msg => {
-        console.log(`[X] Received message ${msg.content.toString()}`);
+        console.log(`[*] Received msg: ${msg.content.toString()}.`);
       },
       {
         noAck: true
