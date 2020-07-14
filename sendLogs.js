@@ -14,16 +14,15 @@ ampq.connect("amqp://localhost", (error, connection) => {
       throw err;
     }
 
-    const queue = "hello";
+    // Create the exchange name
+    const exchange = "logs";
     const msg = "Hello World";
 
-    // Declare a queue, will only be created if queue does not exist
-    channel.assertQueue(queue, {
-      durable: false
-    });
+    // Create the exchange
+    channel.assertExchange(exchange, "fanout", { durable: false });
 
-    // Send the message to the queue
-    channel.sendToQueue(queue, Buffer.from(msg));
+    // Publish the message to the exchange. Since we are using a fanout exchage, the key (second param.) gets ignored
+    channel.publish(exchange, "", Buffer.from(msg));
     console.log(`[X] Sent message ${msg}`);
   });
 
