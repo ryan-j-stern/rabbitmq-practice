@@ -4,6 +4,7 @@
   "description": "This repo is my attempt in learning and experimenting with RabbitMQ",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,6 +20,12 @@
   "homepage": "https://github.com/ryan-j-stern/rabbitmq-practice#readme",
   "dependencies": {
     "amqplib": "^0.5.6",
-    "axios": "^0.19.2"
+    "axios": "^0.19.2",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "node-fetch": "^2.6.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }
