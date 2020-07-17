@@ -1,8 +1,20 @@
 # Weather App with RabbitMQ
 
-## TODOS
+## Weather Service
 
-- Spin up express server
-- Abstract out the RabbitMQ code
-- Utilize async/await (inside try/catch) for api call
-- Use docker-compose with RabbitMQ and Mongo
+### Routes and Requests
+
+All routes in the weather service will start with **http://domain:PORT/weather**
+
+#### POST
+
+- url: /location
+
+- body:
+  {
+  "location": String
+  }
+
+- responses:
+  - 201 - Returns back a formatted string
+  - 500 - Returns back a message of "Internal Service Error"

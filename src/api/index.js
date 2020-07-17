@@ -1,13 +1,12 @@
 const express = require("express");
 const app = express();
 
-const fetchWeather = require("../../fetchWeather");
-const { produceMessage, consumeMsg } = require("../lib/workers");
+const weather = require("./weather/routes");
+const { consumeMsg } = require("../workers");
 
-const queue = "weather";
+app.use(express.json());
+app.use("/weather", weather);
 
-produceMessage(queue, fetchWeather);
-setInterval(produceMessage, 5000, queue, fetchWeather);
-consumeMsg(queue);
+consumeMsg();
 
 module.exports = app;

@@ -1,13 +1,12 @@
 const amqp = require("amqplib");
 
-async function connect() {
-  return await amqp.connect("amqp://localhost");
-}
+const connection = amqp.connect("amqp://localhost");
 
 async function publish(queue, payload) {
   try {
-    const connection = await connect();
-    const channel = await connection.createChannel();
+    const conn = await connection;
+
+    const channel = await conn.createChannel();
 
     await channel.assertQueue(queue, { durable: true });
     console.log(`[X] Sent message to ${queue}`);
@@ -19,8 +18,9 @@ async function publish(queue, payload) {
 
 async function subscribe(queue) {
   try {
-    const connection = await connect();
-    const channel = await connection.createChannel();
+    const conn = await connection;
+
+    const channel = await conn.createChannel();
 
     await channel.assertQueue(queue, { durable: true });
     return await channel.consume(
@@ -35,4 +35,4 @@ async function subscribe(queue) {
   }
 }
 
-module.exports = { connect, publish, subscribe };
+module.exports = { connection, publish, subscribe };
