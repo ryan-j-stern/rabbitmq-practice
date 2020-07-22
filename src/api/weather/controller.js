@@ -5,9 +5,10 @@ async function postLocation(req, res, next) {
 
   const published = await produceMessage(destination);
 
+  // Receive messages from slack consumer
   published === false
     ? res.status(500).json({
-        error: "Internal Service Error"
+        error: "Published == false"
       })
     : res.status(201).json(published);
 }

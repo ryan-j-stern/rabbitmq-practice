@@ -1,9 +1,9 @@
 const { publish, subscribe } = require("../lib/rabbit");
-const fetchWeather = require("../lib/fetchWeather");
+const weather = require("../lib/weather");
 const { feeling, gif } = require("../lib/gif");
 
 async function produceMessage(location) {
-  const response = await fetchWeather(location);
+  const response = await weather(location);
   const exchange = "weather";
   if (response != null) {
     const { destination, current } = response;
@@ -17,19 +17,18 @@ async function produceMessage(location) {
 async function consumeMsg() {
   const exchange = "weather";
   const { channel, q } = await subscribe(exchange, "weather_q");
+
   channel.consume(
     q,
     async msg => {
-      await publish("slack", msg.content.toString());
+      return await publish("slack", msg.content.toString());
     },
-    { noAck: false }
+    { noAck: true }
   );
-  return;
 }
 
 async function produceMoodMessage() {
   try {
-    // Receive message from weather queue
     const exchange = "weather";
     const { channel, q } = await subscribe(exchange, "mood");
     channel.consume(
@@ -41,15 +40,14 @@ async function produceMoodMessage() {
           weather.lastIndexOf("is") + 3,
           weather.indexOf("°")
         );
-        // Compare temperature to mood map
+
         const mood = feeling(temp);
         console.log("Mood:", mood);
-        // Fetch gif with mood
+
         const url = await gif(mood);
-        // Publish gif url to mood queue
         return await publish("slack", url);
       },
-      { noAck: false }
+      { noAck: true }
     );
   } catch (e) {
     console.log(e);
@@ -60,13 +58,14 @@ async function consumeSlack() {
   try {
     const exchange = "slack";
     const { channel, q } = await subscribe(exchange, "slack_q");
-    // Clear message from queue
+
     channel.consume(
       q,
       msg => {
         console.log(`[XX] Received message: ${msg.content.toString()}`);
+        // For each message received, we want to send it back to the client
       },
-      { noAck: false }
+      { noAck: true }
     );
   } catch (e) {
     console.log(e);
