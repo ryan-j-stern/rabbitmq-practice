@@ -9,6 +9,5 @@ const {
 
 consumeMsg();
 produceMoodMessage();
-consumeSlack();
 
 api.listen(PORT, () => console.log(`Listening on port ${PORT}`));

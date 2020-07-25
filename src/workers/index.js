@@ -11,7 +11,6 @@ async function produceMessage(location) {
 
     return await publish(exchange, msg);
   }
-  return false;
 }
 
 async function consumeMsg() {
@@ -31,20 +30,20 @@ async function produceMoodMessage() {
   try {
     const exchange = "weather";
     const { channel, q } = await subscribe(exchange, "mood");
+
     channel.consume(
       q,
       async msg => {
         let weather = msg.content.toString();
-        // Get string from after like until °
+
         const temp = weather.slice(
           weather.lastIndexOf("is") + 3,
           weather.indexOf("°")
         );
 
         const mood = feeling(temp);
-        console.log("Mood:", mood);
-
         const url = await gif(mood);
+
         return await publish("slack", url);
       },
       { noAck: true }
@@ -54,7 +53,7 @@ async function produceMoodMessage() {
   }
 }
 
-async function consumeSlack() {
+async function consumeSlack(messageChannel) {
   try {
     const exchange = "slack";
     const { channel, q } = await subscribe(exchange, "slack_q");
@@ -62,8 +61,8 @@ async function consumeSlack() {
     channel.consume(
       q,
       msg => {
-        console.log(`[XX] Received message: ${msg.content.toString()}`);
-        // For each message received, we want to send it back to the client
+        message = msg.content.toString();
+        return messageChannel.channel.send(message);
       },
       { noAck: true }
     );

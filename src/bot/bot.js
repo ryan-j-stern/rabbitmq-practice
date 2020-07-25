@@ -13,12 +13,14 @@
 
 const { Client } = require("discord.js");
 const axios = require("axios");
+const { consumeSlack } = require("../workers");
 
-const token = "NzM1NDgwMjg4NDM5Njk3NTQ4.Xxg4yA.dfrtmjwX5nirw2J5X-qTuFxoPsU";
+const token =
+  process.env.DISCORD_TOKEN ||
+  "NzM1NDgwMjg4NDM5Njk3NTQ4.Xxg3ZQ.K59SnzY8555DqYqqy8LxsHcLSUs";
 const apiUrl = "http://localhost:3001";
 
 const client = new Client();
-let response = "";
 
 client.on("ready", () => {
   console.log("Weather bot is ready.");
@@ -29,16 +31,15 @@ client.on("message", async message => {
     message.content.lastIndexOf("in") + 3,
     message.content.length
   );
-  console.log("Location:", location);
+
   try {
-    response = await axios.post(`${apiUrl}/weather/location`, {
+    await axios.post(`${apiUrl}/weather/location`, {
       destination: location
     });
   } catch (e) {
     console.log(e);
   }
-  console.log(response);
-  // message.channel.send(response);
+  return await consumeSlack(message);
 });
 
 client.login(token);
