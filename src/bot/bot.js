@@ -25,9 +25,9 @@ client.on("ready", () => {
 });
 
 client.on("message", async message => {
-  // console.log(message.author);
-  if (message.author.username == "ryanstern") {
-    console.log("MESSAGE", message.content);
+  // console.log(message);
+  if (message.author.username != "weather") {
+    // console.log("MESSAGE", message);
     const location = message.content.substring(
       message.content.lastIndexOf("in") + 3,
       message.content.length
