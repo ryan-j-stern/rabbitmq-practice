@@ -15,9 +15,7 @@ const { Client } = require("discord.js");
 const axios = require("axios");
 const { consumeSlack } = require("../workers");
 
-const token =
-  process.env.DISCORD_TOKEN ||
-  "NzM1NDgwMjg4NDM5Njk3NTQ4.Xxg3ZQ.K59SnzY8555DqYqqy8LxsHcLSUs";
+const token = process.env.DISCORD_TOKEN;
 const apiUrl = "http://localhost:3001";
 
 const client = new Client();
@@ -27,19 +25,25 @@ client.on("ready", () => {
 });
 
 client.on("message", async message => {
-  const location = message.content.slice(
-    message.content.lastIndexOf("in") + 3,
-    message.content.length
-  );
+  // console.log(message.author);
+  if (message.author.username == "ryanstern") {
+    console.log("MESSAGE", message.content);
+    const location = message.content.substring(
+      message.content.lastIndexOf("in") + 3,
+      message.content.length
+    );
 
-  try {
-    await axios.post(`${apiUrl}/weather/location`, {
-      destination: location
-    });
-  } catch (e) {
-    console.log(e);
-  }
-  return await consumeSlack(message);
+    try {
+      // This is getting called too many times
+      await axios.post(`${apiUrl}/weather/location`, {
+        destination: location
+      });
+
+      return await consumeSlack(message);
+    } catch (e) {
+      console.log(e);
+    }
+  } else return;
 });
 
 client.login(token);

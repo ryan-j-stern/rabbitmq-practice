@@ -1,11 +1,6 @@
 const api = require("./api");
 const { PORT = 3001 } = process.env;
-
-const {
-  consumeMsg,
-  produceMoodMessage,
-  consumeSlack
-} = require("../src/workers");
+const { consumeMsg, produceMoodMessage } = require("../src/workers");
 
 consumeMsg();
 produceMoodMessage();

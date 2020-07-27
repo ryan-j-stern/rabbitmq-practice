@@ -4,6 +4,7 @@ const { feeling, gif } = require("../lib/gif");
 
 async function produceMessage(location) {
   const response = await weather(location);
+
   const exchange = "weather";
   if (response != null) {
     const { destination, current } = response;
@@ -53,7 +54,7 @@ async function produceMoodMessage() {
   }
 }
 
-async function consumeSlack(messageChannel) {
+async function consumeSlack(message) {
   try {
     const exchange = "slack";
     const { channel, q } = await subscribe(exchange, "slack_q");
@@ -61,8 +62,7 @@ async function consumeSlack(messageChannel) {
     channel.consume(
       q,
       msg => {
-        message = msg.content.toString();
-        return messageChannel.channel.send(message);
+        return message.channel.send(msg.content.toString());
       },
       { noAck: true }
     );

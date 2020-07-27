@@ -1,4 +1,4 @@
-const apiKey = process.env.GIF_API_KEY || "UR1yLkAm2jf6Frny80yk0Po32XSbygII";
+const apiKey = process.env.GIF_API_KEY;
 const axios = require("axios");
 
 async function gif(mood) {
@@ -7,7 +7,7 @@ async function gif(mood) {
       `https://api.giphy.com/v1/gifs/search?q=${mood}&api_key=${apiKey}&limit=5&offset=0&rating=g&lang=en`
     );
 
-    return response.data.data[Math.floor(Math.random() * 6)].url;
+    return response.data.data[Math.floor(Math.random() * 5)].url;
   } catch (e) {
     console.log(e);
   }
