@@ -13,7 +13,6 @@ module.exports = async destination => {
       current: response.data.current
     };
   } catch (err) {
-    // The weather api returned with a status code of 400.
     return null;
   }
 };
