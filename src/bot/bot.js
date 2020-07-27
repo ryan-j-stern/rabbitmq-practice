@@ -3,8 +3,7 @@ const axios = require("axios");
 const { consumeSlack } = require("../workers");
 
 const token = process.env.DISCORD_TOKEN;
-// const apiUrl = "http://localhost:3001";
-const apiUrl = "https://weather-rabbit.herokuapp.com";
+const apiUrl = `https://weather-rabbit.herokuapp.com:${process.env.PORT}`;
 
 const client = new Client();
 
