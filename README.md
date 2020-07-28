@@ -11,7 +11,7 @@ The bot will respond with a sentence of the form `The current weather in Philade
 
 ## Routes and Requests
 
-All routes in the weather service will start with **http://domain:PORT/weather**
+All routes in the weather service will start with **https://weather-rabbit.herokuapp.com/weather**
 
 #### POST
 

@@ -1,8 +1,6 @@
 const amqp = require("amqplib");
 
-const connection = amqp.connect(
-  "amqp://hxwvdgcw:xlTfRT0xHAEiNhZEQBy724rrn_Sj1Y4s@crocodile.rmq.cloudamqp.com/hxwvdgcw"
-);
+const connection = amqp.connect(process.env.AMQP_URL);
 
 async function publish(exchange, payload) {
   try {
