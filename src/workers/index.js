@@ -1,7 +1,6 @@
 const { publish, subscribe } = require("../lib/rabbit");
 const weather = require("../lib/weather");
 const { feeling, gif } = require("../lib/gif");
-const { emitToClient } = require("../lib/socketio");
 
 async function produceMessage(location, user) {
   const response = await weather(location);

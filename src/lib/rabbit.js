@@ -1,7 +1,6 @@
 const amqp = require("amqplib");
 
-// const connection = amqp.connect(process.env.AMQP_URL);
-const connection = amqp.connect("amqp://localhost");
+const connection = amqp.connect(process.env.AMQP_URL);
 
 async function publish(exchange, type = "fanout", routingKey = "", payload) {
   try {
@@ -10,7 +9,7 @@ async function publish(exchange, type = "fanout", routingKey = "", payload) {
 
     await channel.assertExchange(exchange, type, { durable: true });
 
-    console.log(`[X] Sent message to ${exchange}`);
+    console.log(`[X] Sent ${payload} to ${exchange}`);
 
     return await channel.publish(exchange, routingKey, Buffer.from(payload));
   } catch (e) {
