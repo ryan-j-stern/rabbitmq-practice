@@ -1,9 +1,9 @@
 const { produceMessage } = require("../../workers");
 
 async function postLocation(req, res, next) {
-  const destination = req.body.destination;
+  const { destination, user } = req.body;
 
-  const published = await produceMessage(destination);
+  const published = await produceMessage(destination, user);
 
   published === false
     ? res.status(500).json({

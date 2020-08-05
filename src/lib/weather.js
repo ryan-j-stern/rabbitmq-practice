@@ -7,7 +7,6 @@ module.exports = async destination => {
     const response = await axios.get(
       `${baseUrl}/current.json?key=${apiKey}&q="${destination}"`
     );
-
     return {
       destination: response.data.location,
       current: response.data.current

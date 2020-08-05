@@ -3,7 +3,8 @@ const axios = require("axios");
 const { consumeSlack } = require("../workers");
 
 const token = process.env.DISCORD_TOKEN;
-const apiUrl = `https://weather-rabbit.herokuapp.com`;
+// const apiUrl = `https://weather-rabbit.herokuapp.com`;
+const apiUrl = "http://localhost:3001";
 
 const client = new Client();
 
@@ -20,7 +21,8 @@ client.on("message", async message => {
 
     try {
       await axios.post(`${apiUrl}/weather/location`, {
-        destination: location
+        destination: location,
+        user: message.author.username
       });
 
       return await consumeSlack(message);
